@@ -27,8 +27,8 @@ describe(' Teste da Funcionalidade de Produtos', () => {
             },
             body: {
             "nome": randomProductName,
-            "descricao": "produto para teste",
-            "preco": 100,
+            "descricao": "produtos para testes",
+            "preco": 1110,
             "quantidade": 10
             },
             
@@ -37,18 +37,19 @@ describe(' Teste da Funcionalidade de Produtos', () => {
             expect(response.body.message).to.eq('Cadastro realizado com sucesso')
         })
     
-    });
+        });
     });
 
-    it.only('Deve editar um produto já cadastrado', () => {
+    it('Deve editar um produto já cadastrado', () => {
+        const randomProductName = 'produto teste' + Math.floor(Math.random() * 100000);
         cy.request('produtos').then (response => {
-            let id = response.body.produtos[1]._id;
+            let id = response.body.produtos[0]._id;
             cy.request({
                 method: 'PUT',
-                url: 'produtos/ ' + id,
+                url: 'produtos/ ' +id,
                 headers: {authorization: token},
                 body:{
-                "nome": 'produto editado dois barra dois' ,
+                "nome": randomProductName ,
                 "descricao": 'produto editado no put',
                 "quantidade": "100",
                 "preco": "101"
@@ -58,6 +59,45 @@ describe(' Teste da Funcionalidade de Produtos', () => {
 
         })
 
+
+
+    });
+    
+    it('Deve editar um produto cadastrado previamente', () => {
+        const randomProductName = 'produto teste' + Math.floor(Math.random() * 100000);
+        cy.CadastrarProdutos(token, randomProductName, 'produto para teste', 1001, 10).then(response => {
+            let id = response.body._id;
+            cy.request({
+                method: 'PUT',
+                url: 'produtos/' + id,
+                headers: {authorization: token},
+                body:{
+                "nome": randomProductName ,
+                "descricao": 'produto put',
+                "quantidade": "100",
+                "preco": "101"
+                }
+            }).then(response => {
+                expect(response.status).to.eq(200)
+                expect(response.body.message).to.eq('Registro alterado com sucesso')
+            }) 
+
+        })
+    })
+    it.only('Deve deletar um produto cadastrado previamente', () => {
+        const randomProductName = 'produto teste' + Math.floor(Math.random() * 100000);
+        cy.CadastrarProdutos(token, randomProductName, 'produto para teste', 1001, 10).then(response => {
+            let id = response.body._id;
+            cy.request({
+                method: 'DELETE',
+                url: 'produtos/' + id,
+                headers: {authorization: token},
+            }).then(response => {
+                expect(response.status).to.eq(200)
+                expect(response.body.message).to.eq('Registro excluído com sucesso')
+            }) 
+
+        })
 
 
     });

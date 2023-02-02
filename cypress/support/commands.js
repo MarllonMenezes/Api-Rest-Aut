@@ -38,4 +38,20 @@ Cypress.Commands.add('token', (email, senha) => {  cy.request({
    return response.body.authorization;
     
   });
+
+Cypress.Commands.add('CadastrarProdutos', (token, randomProductName, descricao, preco, quantidade) => {
+    cy.request({
+        method: 'POST',
+        url: 'produtos',
+        headers: {authorization: token},
+        body: {
+          "nome": randomProductName,
+          "descricao": descricao,
+          "preco": preco,
+          "quantidade": quantidade
+        },
+    
+      });
+});
+
 });
