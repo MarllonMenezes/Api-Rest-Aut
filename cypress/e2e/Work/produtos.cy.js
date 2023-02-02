@@ -37,11 +37,28 @@ describe(' Teste da Funcionalidade de Produtos', () => {
             expect(response.body.message).to.eq('Cadastro realizado com sucesso')
         })
     
-        
-    
-    
-    
-    })
+    });
+    });
+
+    it.only('Deve editar um produto já cadastrado', () => {
+        cy.request('produtos').then (response => {
+            let id = response.body.produtos[1]._id;
+            cy.request({
+                method: 'PUT',
+                url: 'produtos/ ' + id,
+                headers: {authorization: token},
+                body:{
+                "nome": 'produto editado dois barra dois' ,
+                "descricao": 'produto editado no put',
+                "quantidade": "100",
+                "preco": "101"
+                }
+            })
+
+
+        })
+
+
 
     });
 });
