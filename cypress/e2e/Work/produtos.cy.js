@@ -1,9 +1,21 @@
+import contracts from '../../contracts/produtos.contracts'
+
 describe(' Teste da Funcionalidade de Produtos', () => {
     let token;
     before(() => {
         cy.token('007qa@qa.com.br','teste').then(tkn => { token = tkn})
 
     });
+
+    it.only('Deve validar contrato de produto', () => {
+        
+        cy.request('produtos').then(response => {
+            return contracts.validateAsync(response.body)
+        })
+
+
+    });
+
 
     it('Listar Produtos', () => {
         cy.request({
@@ -84,7 +96,7 @@ describe(' Teste da Funcionalidade de Produtos', () => {
 
         })
     })
-    it.only('Deve deletar um produto cadastrado previamente', () => {
+    it('Deve deletar um produto cadastrado previamente', () => {
         const randomProductName = 'produto teste' + Math.floor(Math.random() * 100000);
         cy.CadastrarProdutos(token, randomProductName, 'produto para teste', 1001, 10).then(response => {
             let id = response.body._id;
