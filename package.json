@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx serverest",
     "cy:run" : "npx cypress run",
-    "cy:report": "npx mochawesome-merge ./mochawesome-report/mochawesome*.json > ./mochawesome-report/mochawesome.json && npx marge ./mochawesome-report/mochawesome.json"
+    "cy:report": "npx mochawesome-report-generator cypress/reports/mochawesome"
   },
   "keywords": [],
   "author": "",
